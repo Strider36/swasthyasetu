@@ -12,4 +12,4 @@ services:
       - key: JWT_SECRET
         generateValue: true # Generates a secure random JWT key automatically on Render
       - key: MONGODB_URI
-        placeholder: "Enter your MongoDB Atlas Connection URI"
+        sync: false
