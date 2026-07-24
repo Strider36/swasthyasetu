@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Vault Account - SwasthyaSetu</title>
+  
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/components.css">
+  
+  <style>
+    body {
+      background-color: var(--background);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .auth-card {
+      width: 100%;
+      max-width: 460px;
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-premium);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+    }
+    
+    .auth-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.35rem;
+      color: var(--primary);
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+    
+    .auth-logo svg {
+      width: 28px;
+      height: 28px;
+      stroke: var(--primary);
+      fill: none;
+      stroke-width: 2.5;
+    }
+    
+    .auth-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    
+    .auth-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    
+    .auth-subtitle {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 6px;
+    }
+    
+    .auth-footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+    
+    .auth-footer a {
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    .auth-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-card">
+    <a href="/" class="auth-logo">
+      <svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20" stroke="currentColor" stroke-linecap="round"/></svg>
+      SwasthyaSetu
+    </a>
+    
+    <div class="auth-header">
+      <h2 class="auth-title">Create your Health Vault</h2>
+      <p class="auth-subtitle">Get started with secure medical reminder compliance profiles.</p>
+    </div>
+    
+    <form id="register-form">
+      <div class="form-group">
+        <label for="name" class="form-label">Full Name</label>
+        <input type="text" id="name" class="form-control" placeholder="John Doe" required autocomplete="name">
+      </div>
+
+      <div class="form-group">
+        <label for="email" class="form-label">Email Address</label>
+        <input type="email" id="email" class="form-control" placeholder="name@domain.com" required autocomplete="username">
+      </div>
+      
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" class="form-control" placeholder="At least 6 characters" required autocomplete="new-password">
+      </div>
+
+      <div class="form-group">
+        <label for="confirm-password" class="form-label">Confirm Password</label>
+        <input type="password" id="confirm-password" class="form-control" placeholder="••••••••" required autocomplete="new-password">
+      </div>
+      
+      <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-weight: 600; margin-top: 8px;">
+        Register Account
+      </button>
+    </form>
+    
+    <div class="auth-footer">
+      Already have an account? <a href="/login.html">Sign In</a>
+    </div>
+  </div>
+
+  <script type="module" src="/js/api.js"></script>
+  <script type="module" src="/js/auth.js"></script>
+  <script>
+    // Theme alignment helper
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+      document.body.classList.add('dark');
+    }
+  </script>
+</body>
+</html>

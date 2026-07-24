@@ -1,0 +1,11 @@
+/* SwasthyaSetu Page-Specific Style Overrides */
+
+/* Dashboard Grid Overrides */
+.dashboard-grid {
+  margin-top: 20px;
+}
+
+/* Auth Pages adjustments */
+.auth-card {
+  backdrop-filter: blur(8px);
+}

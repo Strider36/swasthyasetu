@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwasthyaSetu - AI-Powered Healthcare Management Platform</title>
+  
+  <!-- Fonts -->
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/components.css">
+  
+  <style>
+    /* Unique Page-Specific Landing Layout Styles */
+    body {
+      background-color: var(--background);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+    }
+    
+    .landing-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-height);
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 80px;
+      z-index: 1000;
+      transition: var(--transition);
+    }
+    body.dark .landing-nav {
+      background: rgba(9, 13, 22, 0.7);
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--primary);
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+      align-items: center;
+    }
+    
+    .nav-links a {
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+    
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+    
+    .hero-section {
+      padding: 180px 80px 100px;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 60px;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(59, 130, 246, 0.08);
+      color: var(--primary);
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+      border: 1px solid rgba(59, 130, 246, 0.15);
+    }
+    
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: 3.5rem;
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+    }
+    
+    .hero-title span {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .hero-desc {
+      color: var(--text-secondary);
+      font-size: 1.15rem;
+      line-height: 1.6;
+      margin-bottom: 40px;
+      max-width: 550px;
+    }
+    
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+    }
+    
+    .hero-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .hero-card {
+      width: 100%;
+      max-width: 480px;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-premium);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      padding: 32px;
+      position: relative;
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    /* Section containers */
+    .section-container {
+      padding: 100px 80px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .section-header {
+      text-align: center;
+      max-width: 650px;
+      margin: 0 auto 60px;
+    }
+    
+    .section-tag {
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+      display: block;
+    }
+    
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 2.25rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    
+    .section-desc {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+    }
+    
+    /* Feature Grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
+    }
+    
+    .feature-card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      transition: var(--transition);
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary);
+    }
+    
+    .feature-icon-wrapper {
+      width: 48px;
+      height: 48px;
+      background: rgba(59, 130, 246, 0.08);
+      color: var(--primary);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    
+    .feature-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+    }
+    
+    .feature-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    
+    /* Steps timeline */
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      position: relative;
+    }
+    
+    .step-card {
+      text-align: center;
+      position: relative;
+    }
+    
+    .step-number {
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius-full);
+      background-color: var(--primary);
+      color: white;
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+    
+    /* FAQ Section */
+    .faq-wrapper {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .faq-item {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    
+    .faq-question {
+      padding: 24px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 24px;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      line-height: 1.6;
+    }
+    
+    .faq-item.open .faq-answer {
+      max-height: 200px;
+      padding-bottom: 24px;
+    }
+    
+    .faq-item.open .faq-question svg {
+      transform: rotate(180deg);
+    }
+    
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--border);
+      background-color: var(--surface);
+      padding: 60px 80px 40px;
+    }
+    
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(3, 1fr);
+      gap: 40px;
+      max-width: 1400px;
+      margin: 0 auto 40px;
+    }
+    
+    .footer-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-top: 16px;
+      max-width: 320px;
+    }
+    
+    .footer-col h4 {
+      font-size: 1rem;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .footer-links a {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+    
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+      .landing-nav { padding: 0 40px; }
+      .hero-section {
+        grid-template-columns: 1fr;
+        padding: 140px 40px 60px;
+        text-align: center;
+      }
+      .hero-desc { margin: 0 auto 40px; }
+      .hero-buttons { justify-content: center; }
+      .timeline { grid-template-columns: 1fr; gap: 30px; }
+      .section-container { padding: 80px 40px; }
+      .footer { padding: 60px 40px 40px; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="landing-nav">
+    <div class="logo-container">
+      <svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+      SwasthyaSetu
+    </div>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="/login.html" class="btn btn-secondary">Sign In</a></li>
+      <li><a href="/register.html" class="btn btn-primary">Get Started</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero-section">
+    <div>
+      <div class="hero-badge">
+        <span style="font-size: 1rem;">✨</span> Introducing SwasthyaSetu AI
+      </div>
+      <h1 class="hero-title">Your complete <span>AI-Powered</span> Healthcare Hub</h1>
+      <p class="hero-desc">
+        Streamline your medication schedules, digitize prescriptions instantly using AI scanner, track clinic appointments, archive laboratory records, and maintain critical profiles—all in one secure vault.
+      </p>
+      <div class="hero-buttons">
+        <a href="/register.html" class="btn btn-primary" style="padding: 14px 28px; font-size: 1rem;">Get Started Free</a>
+        <a href="/login.html" class="btn btn-secondary" style="padding: 14px 28px; font-size: 1rem;">Access Vault</a>
+      </div>
+    </div>
+    
+    <div class="hero-visual">
+      <div class="hero-card">
+        <!-- Interactive Preview Dashboard -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <div style="font-weight: 600; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+            <span style="color: var(--success);">●</span> Live Adherence Tracker
+          </div>
+          <span class="badge badge-success" style="font-size: 0.7rem;">94% compliance</span>
+        </div>
+        
+        <!-- Adherence Checkboxes Mock -->
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px; background: rgba(59, 130, 246, 0.04); border-radius: var(--radius-md); border: 1px solid var(--border);">
+            <div>
+              <div style="font-weight: 600; font-size: 0.9rem;">Atorvastatin (Lipitor)</div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary);">10mg • Daily after meal</div>
+            </div>
+            <span class="badge badge-success">Taken</span>
+          </div>
+          
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px; background: rgba(59, 130, 246, 0.04); border-radius: var(--radius-md); border: 1px solid var(--border);">
+            <div>
+              <div style="font-weight: 600; font-size: 0.9rem;">Metformin</div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary);">500mg • Before Breakfast</div>
+            </div>
+            <span class="badge badge-warning">Pending</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Features Section -->
+  <section id="features" class="section-container">
+    <div class="section-header">
+      <span class="section-tag">Features</span>
+      <h2 class="section-title">Everything you need to manage your family's health</h2>
+      <p class="section-desc">We combine smart OCR scanning, reminder schedules, and document storage to provide an effortless, premium wellness vault.</p>
+    </div>
+    
+    <div class="feature-grid">
+      <!-- Feature 1 -->
+      <div class="feature-card">
+        <div class="feature-icon-wrapper">
+          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <h3>Medicine reminders</h3>
+        <p>Log dosages, specify recurrence, compile schedules, and track visual compliance percentages dynamically.</p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feature-card">
+        <div class="feature-icon-wrapper">
+          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </div>
+        <h3>AI OCR Scanner</h3>
+        <p>Instantly upload images of drug packaging or physician prescriptions to extract details, auto-creating reminders instantly.</p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feature-card">
+        <div class="feature-icon-wrapper">
+          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <h3>Structured Records</h3>
+        <p>Securely store insurance certificates, prescription slips, receipts, and clinical outcomes under strict categories.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how-it-works" class="section-container" style="background-color: rgba(59, 130, 246, 0.02); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div class="section-header">
+      <span class="section-tag">Workflow</span>
+      <h2 class="section-title">Three steps to health peace-of-mind</h2>
+      <p class="section-desc">Start taking control of your daily medication adherence and personal health documents today.</p>
+    </div>
+    
+    <div class="timeline">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h3 style="margin-bottom: 12px;">Create an Account</h3>
+        <p style="color: var(--text-secondary); font-size: 0.95rem;">Sign up securely, fill out your critical blood types, active allergies, and emergency call profiles.</p>
+      </div>
+      
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h3 style="margin-bottom: 12px;">Scan or Add Reminders</h3>
+        <p style="color: var(--text-secondary); font-size: 0.95rem;">Upload images of doctor prescriptions. Tesseract AI parses details so you can add tracking timers in one click.</p>
+      </div>
+      
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h3 style="margin-bottom: 12px;">Track and Export</h3>
+        <p style="color: var(--text-secondary); font-size: 0.95rem;">Monitor weekly compliance indexes using visual graphs, download archives, and check metrics easily.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="section-container">
+    <div class="section-header">
+      <span class="section-tag">Help Desk</span>
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <p class="section-desc">Find quick answers to common queries regarding security, data backups, and OCR reliability.</p>
+    </div>
+    
+    <div class="faq-wrapper">
+      <div class="faq-item">
+        <div class="faq-question">
+          Is my health data secure on SwasthyaSetu?
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" style="transition: var(--transition);"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Absolutely. Your sensitive credentials and personal profiles are encrypted. We hash accounts via bcrypt algorithms and structure user document uploads under highly secure private token authorizations.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          How reliable is the AI OCR scanner?
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" style="transition: var(--transition);"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Our scanner leverages Tesseract.js to scan medicine boxes and handwritten doctor prescriptions. Since readability varies based on camera angles, lighting, and doctor penmanship, we display editable forms so you can correct details before saving.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          Does the platform provide actual diagnoses?
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" style="transition: var(--transition);"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          No. SwasthyaSetu and its AI assistant provide general wellness pointers, composition lookups, and tracking calendars. Responses are strictly educational and not a replacement for advice from certified clinical professionals.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="logo-container" style="margin-bottom: 20px;">
+          <svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          SwasthyaSetu
+        </div>
+        <p class="footer-desc">Empowering individuals and families to take control of their clinical files, adherence schedules, and records via intelligent automation.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul class="footer-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="/login.html">Login</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul class="footer-links">
+          <li><a href="#faq">FAQ Documentation</a></li>
+          <li><a href="#">Security Safeguards</a></li>
+          <li><a href="#">Privacy Agreement</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul class="footer-links">
+          <li><a href="#">support@swasthyasetu.com</a></li>
+          <li><a href="#">Help Line Center</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 SwasthyaSetu. All rights reserved.</p>
+      <p>Secure • HIPAA-Compliant Architecture • AI-Powered</p>
+    </div>
+  </footer>
+
+  <script>
+    // Simple UI interactions for FAQ Accordeons
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const item = button.parentElement;
+        const isOpen = item.classList.contains('open');
+        
+        // Close other FAQs
+        document.querySelectorAll('.faq-item').forEach(faq => faq.classList.remove('open'));
+        
+        if (!isOpen) {
+          item.classList.add('open');
+        }
+      });
+    });
+
+    // Automatically check user preferences
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+      document.body.classList.add('dark');
+    }
+  </script>
+</body>
+</html>

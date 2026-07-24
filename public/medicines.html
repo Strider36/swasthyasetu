@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medications - SwasthyaSetu Vault</title>
+  
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/components.css">
+  
+  <style>
+    .meds-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .med-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 220px;
+    }
+
+    .med-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .med-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+    }
+
+    .med-dose {
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .med-details {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .med-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .med-footer-actions {
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-top: auto;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* Checkbox list for timings */
+    .timings-checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .timing-check-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .timing-check-item input {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar navigation -->
+    <div id="app-sidebar" data-active="medicines"></div>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <!-- Navbar -->
+      <div id="app-navbar" data-title="Medications Vault" data-subtitle="Configure tracking timers, dosage instructions, and history charts"></div>
+
+      <!-- Page Content -->
+      <main class="page-container">
+        
+        <div class="page-header" style="margin-bottom: 0;">
+          <div>
+            <h2 class="page-title">Active Prescribed Medications</h2>
+            <p class="page-subtitle">Add, edit, or remove your daily tracking routines.</p>
+          </div>
+          <button class="btn btn-primary" id="btn-open-med-modal">
+            <i data-lucide="plus"></i> Add Medication
+          </button>
+        </div>
+
+        <!-- Medications Grid -->
+        <div class="meds-grid" id="medications-grid">
+          <div style="grid-column: 1 / -1; text-align: center; color: var(--text-secondary); padding: 48px;">
+            Loading medications database...
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Add/Edit Medicine Modal Dialog -->
+  <div class="modal-backdrop" id="med-modal">
+    <div class="modal-dialog" style="max-width: 550px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="med-modal-title">Schedule Medication</h3>
+        <button class="modal-close" id="med-modal-close">&times;</button>
+      </div>
+      
+      <form id="med-form">
+        <input type="hidden" id="med-id">
+        
+        <div class="form-group">
+          <label for="med-name" class="form-label">Medicine Name</label>
+          <input type="text" id="med-name" class="form-control" placeholder="Atorvastatin, Metformin" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+          <div class="form-group">
+            <label for="med-dose" class="form-label">Dosage Strength</label>
+            <input type="text" id="med-dose" class="form-control" placeholder="10mg, 1 tablet" required>
+          </div>
+          <div class="form-group">
+            <label for="med-freq" class="form-label">Frequency</label>
+            <select id="med-freq" class="form-control" required>
+              <option value="Daily">Daily</option>
+              <option value="Twice a day">Twice a day</option>
+              <option value="Three times a day">Three times a day</option>
+              <option value="Weekly">Weekly</option>
+              <option value="As needed">As needed</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Timings Checklist -->
+        <div class="form-group">
+          <label class="form-label">Daily Time Slots</label>
+          <div class="timings-checkbox-grid">
+            <label class="timing-check-item">
+              <input type="checkbox" name="med-timings" value="Morning" checked>
+              <span>Morning</span>
+            </label>
+            <label class="timing-check-item">
+              <input type="checkbox" name="med-timings" value="Afternoon">
+              <span>Afternoon</span>
+            </label>
+            <label class="timing-check-item">
+              <input type="checkbox" name="med-timings" value="Evening">
+              <span>Evening</span>
+            </label>
+            <label class="timing-check-item">
+              <input type="checkbox" name="med-timings" value="Night">
+              <span>Night</span>
+            </label>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+          <div class="form-group">
+            <label for="med-start" class="form-label">Start Date</label>
+            <input type="date" id="med-start" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="med-end" class="form-label">End Date (Optional)</label>
+            <input type="date" id="med-end" class="form-control">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+          <div class="form-group">
+            <label for="med-reminder" class="form-label">Remind At (Daily)</label>
+            <input type="time" id="med-reminder" class="form-control" value="08:00">
+          </div>
+          <div class="form-group">
+            <label for="med-instructions" class="form-label">Special Instructions</label>
+            <input type="text" id="med-instructions" class="form-control" placeholder="Take after meal">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="med-modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-med-submit">Schedule Medicine</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script type="module" src="/js/api.js"></script>
+  <script type="module" src="/js/main.js"></script>
+  <script type="module" src="/js/medicines.js"></script>
+</body>
+</html>

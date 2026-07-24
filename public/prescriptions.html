@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prescriptions - SwasthyaSetu Vault</title>
+  
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/components.css">
+  
+  <style>
+    .rx-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .rx-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 280px;
+    }
+
+    .rx-header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .rx-doctor {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .rx-details {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .rx-med-table {
+      width: 100%;
+      margin: 12px 0;
+      font-size: 0.8rem;
+      border-collapse: collapse;
+    }
+
+    .rx-med-table th {
+      text-align: left;
+      color: var(--text-secondary);
+      padding: 4px 6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .rx-med-table td {
+      padding: 6px;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .rx-image-link {
+      color: var(--primary);
+      font-weight: 500;
+      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 8px;
+    }
+
+    .rx-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div id="app-sidebar" data-active="prescriptions"></div>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <!-- Navbar -->
+      <div id="app-navbar" data-title="Prescription Archives" data-subtitle="Review physician recommendations and medication listings"></div>
+
+      <!-- Page Content -->
+      <main class="page-container">
+        
+        <div class="page-header" style="margin-bottom: 0;">
+          <div>
+            <h2 class="page-title">Scanned Doctor Prescriptions</h2>
+            <p class="page-subtitle">Historical archive of your physician advice and digital slips.</p>
+          </div>
+          <button class="btn btn-primary" onclick="window.location.href='/scanner.html?mode=prescription'">
+            <i data-lucide="scan-line"></i> Scan New Prescription
+          </button>
+        </div>
+
+        <!-- Prescriptions list grid -->
+        <div class="rx-grid" id="rx-grid">
+          <div style="grid-column: 1 / -1; text-align: center; color: var(--text-secondary); padding: 48px;">
+            Loading prescriptions archive...
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script type="module" src="/js/api.js"></script>
+  <script type="module" src="/js/main.js"></script>
+  <script type="module" src="/js/prescriptions.js"></script>
+</body>
+</html>

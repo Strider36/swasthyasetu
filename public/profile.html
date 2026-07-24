@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medical Profile - SwasthyaSetu</title>
+  
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/components.css">
+  
+  <style>
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 32px;
+      align-items: start;
+    }
+    
+    .medical-card {
+      background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.05), rgba(6, 182, 212, 0.05));
+      border: 1px dashed var(--primary);
+    }
+    
+    .metric-badges {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+    
+    .metric-badge-item {
+      background-color: rgba(var(--surface-rgb), 0.5);
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+    
+    .metric-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .metric-label {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .tag-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--background);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+    }
+
+    .tag-remove {
+      cursor: pointer;
+      color: var(--error);
+      font-weight: bold;
+    }
+
+    .contact-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 900px) {
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar Container (Injected) -->
+    <div id="app-sidebar" data-active="profile"></div>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <!-- Navbar Container (Injected) -->
+      <div id="app-navbar" data-title="Medical Profile Card" data-subtitle="Configure emergencies, biological properties, and clinical parameters"></div>
+
+      <!-- Page Content Container -->
+      <main class="page-container">
+        <div class="profile-grid">
+          
+          <!-- Left Column: Medical ID Card Summary -->
+          <div class="glass-card medical-card">
+            <div style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 24px;">
+              <div class="nav-avatar" style="width: 72px; height: 72px; font-size: 2rem; margin: 0 auto 16px; border: 3px solid var(--surface); box-shadow: var(--shadow-md);">U</div>
+              <h3 id="card-name" style="font-size: 1.25rem;">Checking...</h3>
+              <p id="card-email" style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">user@example.com</p>
+            </div>
+            
+            <div class="metric-badges">
+              <div class="metric-badge-item">
+                <div class="metric-value" id="card-blood">-</div>
+                <div class="metric-label">Blood Group</div>
+              </div>
+              <div class="metric-badge-item">
+                <div class="metric-value" id="card-age">-</div>
+                <div class="metric-label">Age</div>
+              </div>
+              <div class="metric-badge-item">
+                <div class="metric-value" id="card-height">-</div>
+                <div class="metric-label">Height</div>
+              </div>
+              <div class="metric-badge-item">
+                <div class="metric-value" id="card-weight">-</div>
+                <div class="metric-label">Weight</div>
+              </div>
+            </div>
+
+            <div style="margin-top: 24px; border-top: 1px solid var(--border); padding-top: 16px;">
+              <h4 style="font-size: 0.9rem; margin-bottom: 10px; text-transform: uppercase; color: var(--text-secondary); font-weight: 700;">Allergies</h4>
+              <div id="card-allergies" class="tags-container">
+                <div style="font-size: 0.85rem; color: var(--text-secondary);">None listed</div>
+              </div>
+            </div>
+
+            <div style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 16px;">
+              <h4 style="font-size: 0.9rem; margin-bottom: 10px; text-transform: uppercase; color: var(--text-secondary); font-weight: 700;">Chronic Conditions</h4>
+              <div id="card-conditions" class="tags-container">
+                <div style="font-size: 0.85rem; color: var(--text-secondary);">None listed</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Editable Forms -->
+          <div class="glass-card">
+            <h3 style="font-size: 1.25rem; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">Update Medical Details</h3>
+            
+            <form id="profile-form">
+              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                <div class="form-group">
+                  <label for="profile-name" class="form-label">Full Name</label>
+                  <input type="text" id="profile-name" class="form-control" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                  <label for="profile-age" class="form-label">Age (Years)</label>
+                  <input type="number" id="profile-age" class="form-control" placeholder="28">
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                <div class="form-group">
+                  <label for="profile-gender" class="form-label">Gender</label>
+                  <select id="profile-gender" class="form-control">
+                    <option value="">Select</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Non-binary">Non-binary</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="profile-blood" class="form-label">Blood Group</label>
+                  <select id="profile-blood" class="form-control">
+                    <option value="">Select</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="profile-height" class="form-label">Height (cm)</label>
+                  <input type="number" id="profile-height" class="form-control" placeholder="175">
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                <div class="form-group">
+                  <label for="profile-weight" class="form-label">Weight (kg)</label>
+                  <input type="number" id="profile-weight" class="form-control" placeholder="70" step="0.1">
+                </div>
+              </div>
+
+              <!-- Tags for Allergies -->
+              <div class="form-group">
+                <label class="form-label">Allergies (Press Enter to Add)</label>
+                <input type="text" id="allergy-input" class="form-control" placeholder="e.g. Penicillin, Peanuts">
+                <div id="allergies-list-edit" class="tags-container"></div>
+              </div>
+
+              <!-- Tags for Conditions -->
+              <div class="form-group">
+                <label class="form-label">Medical Conditions (Press Enter to Add)</label>
+                <input type="text" id="condition-input" class="form-control" placeholder="e.g. Asthma, Hypertension">
+                <div id="conditions-list-edit" class="tags-container"></div>
+              </div>
+
+              <!-- Emergency Contacts CRUD -->
+              <div style="margin-top: 32px; border-top: 1px solid var(--border); padding-top: 24px; margin-bottom: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                  <h4 style="font-size: 1rem; font-weight: 600;">Emergency Contacts</h4>
+                  <button type="button" class="btn btn-secondary btn-icon" id="btn-add-contact" style="font-size: 0.8rem; padding: 6px 12px;">
+                    <i data-lucide="plus" style="width: 14px; height: 14px;"></i> Add Contact
+                  </button>
+                </div>
+                <div id="contacts-container"></div>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="padding: 12px 24px; font-weight: 600;">
+                Save Profile Changes
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add Contact Dialog Modal -->
+  <div class="modal-backdrop" id="contact-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Emergency Contact Details</h3>
+        <button class="modal-close" id="contact-modal-close">&times;</button>
+      </div>
+      <form id="contact-form">
+        <div class="form-group">
+          <label for="contact-name" class="form-label">Contact Name</label>
+          <input type="text" id="contact-name" class="form-control" placeholder="Jane Doe" required>
+        </div>
+        <div class="form-group">
+          <label for="contact-relation" class="form-label">Relationship</label>
+          <input type="text" id="contact-relation" class="form-control" placeholder="Spouse" required>
+        </div>
+        <div class="form-group">
+          <label for="contact-phone" class="form-label">Phone Number</label>
+          <input type="tel" id="contact-phone" class="form-control" placeholder="+1 555-0199" required>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="contact-modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Contact</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script type="module" src="/js/api.js"></script>
+  <script type="module" src="/js/main.js"></script>
+  <script type="module" src="/js/profile.js"></script>
+</body>
+</html>

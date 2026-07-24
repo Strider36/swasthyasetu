@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appointments - SwasthyaSetu Vault</title>
+  
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/components.css">
+  
+  <style>
+    .appointments-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 32px;
+    }
+
+    .appt-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .appt-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .appt-main-info {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .appt-date-badge {
+      width: 64px;
+      background-color: rgba(var(--primary-rgb), 0.08);
+      color: var(--primary);
+      border-radius: var(--radius-md);
+      padding: 10px;
+      text-align: center;
+      font-family: var(--font-heading);
+      line-height: 1.2;
+    }
+
+    .appt-date-day {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .appt-date-month {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .appt-body {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .appt-doctor {
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    .appt-meta {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .appt-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Departments icons lookup */
+    .dept-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--background);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+    
+    .timeline-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar navigation -->
+    <div id="app-sidebar" data-active="appointments"></div>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <!-- Navbar -->
+      <div id="app-navbar" data-title="Doctor Appointments" data-subtitle="Track hospital consultations, checkups, and reminders"></div>
+
+      <!-- Page Content -->
+      <main class="page-container">
+        
+        <div class="appointments-layout">
+          
+          <!-- Left Column: Appointments List -->
+          <div>
+            <div class="page-header" style="margin-bottom: 0;">
+              <div>
+                <h2 class="page-title">Upcoming Consultations</h2>
+                <p class="page-subtitle">Timeline of scheduled visits and doctor reminders.</p>
+              </div>
+              <button class="btn btn-primary" id="btn-open-appt-modal">
+                <i data-lucide="plus"></i> Book Consultation
+              </button>
+            </div>
+            
+            <div class="appt-list" id="appointments-container">
+              <div style="text-align: center; color: var(--text-secondary); padding: 48px;">
+                Loading appointments database...
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Info Panel & Calendar summary -->
+          <div>
+            <div class="glass-card" style="margin-top: 24px;">
+              <h3 style="font-size: 1.1rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                <i data-lucide="info" style="color: var(--primary);"></i> Consultations Guidelines
+              </h3>
+              <ul style="padding-left: 20px; font-size: 0.85rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 12px; line-height: 1.5;">
+                <li>Set up notifications to alarm you 60 minutes before departure.</li>
+                <li>Make sure to upload relevant laboratory results in the **Health Records** archive before visiting.</li>
+                <li>Carry digital prescriptions for fast clinical reference checkins.</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Book Appointment Modal -->
+  <div class="modal-backdrop" id="appt-modal">
+    <div class="modal-dialog" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="appt-modal-title">Book Consultation</h3>
+        <button class="modal-close" id="appt-modal-close">&times;</button>
+      </div>
+      <form id="appt-form">
+        <input type="hidden" id="appt-id">
+
+        <div class="form-group">
+          <label for="appt-doctor" class="form-label">Doctor Name</label>
+          <input type="text" id="appt-doctor" class="form-control" placeholder="Dr. Sarah Jenkins" required>
+        </div>
+
+        <div class="form-group">
+          <label for="appt-hospital" class="form-label">Hospital / Clinic</label>
+          <input type="text" id="appt-hospital" class="form-control" placeholder="City General Hospital" required>
+        </div>
+
+        <div class="form-group">
+          <label for="appt-dept" class="form-label">Specialty / Department</label>
+          <select id="appt-dept" class="form-control">
+            <option value="General Medicine">General Medicine</option>
+            <option value="Cardiology">Cardiology</option>
+            <option value="Neurology">Neurology</option>
+            <option value="Dermatology">Dermatology</option>
+            <option value="Pediatrics">Pediatrics</option>
+            <option value="Orthopedics">Orthopedics</option>
+            <option value="Ophthalmology">Ophthalmology</option>
+            <option value="Dentistry">Dentistry</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+          <div class="form-group">
+            <label for="appt-date" class="form-label">Appointment Date</label>
+            <input type="date" id="appt-date" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="appt-time" class="form-label">Time</label>
+            <input type="time" id="appt-time" class="form-control" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+          <div class="form-group">
+            <label for="appt-reminder" class="form-label">Remind Me Before</label>
+            <select id="appt-reminder" class="form-control">
+              <option value="15">15 minutes</option>
+              <option value="30">30 minutes</option>
+              <option value="60" selected>1 hour</option>
+              <option value="120">2 hours</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="appt-status" class="form-label">Status</label>
+            <select id="appt-status" class="form-control">
+              <option value="Scheduled">Scheduled</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="appt-notes" class="form-label">Notes</label>
+          <input type="text" id="appt-notes" class="form-control" placeholder="Checkup for hypertension, bring lab reports">
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="appt-modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-appt-submit">Schedule Appointment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script type="module" src="/js/api.js"></script>
+  <script type="module" src="/js/main.js"></script>
+  <script type="module" src="/js/appointments.js"></script>
+</body>
+</html>
