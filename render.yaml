@@ -1,0 +1,15 @@
+# Render Blueprint Specification for SwasthyaSetu
+services:
+  - type: web
+    name: swasthyasetu
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true # Generates a secure random JWT key automatically on Render
+      - key: MONGODB_URI
+        placeholder: "Enter your MongoDB Atlas Connection URI"
