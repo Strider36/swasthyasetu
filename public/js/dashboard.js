@@ -1,5 +1,8 @@
-/* SwasthyaSetu Dashboard Controller */
+/* Sanjeev Astra Dashboard Controller */
 import { apiFetch, showToast, triggerReminderAudio } from './api.js';
+import { triggerMedicalSos } from './sos.js';
+import { t } from './i18n.js';
+import { VoiceAssistant } from './voice.js';
 
 let activeMedicines = [];
 let activeAppointments = [];
@@ -9,7 +12,155 @@ document.addEventListener('DOMContentLoaded', () => {
   loadDashboardData();
   setupEmergencyModal();
   setupWaterTracker();
+  setupSosTrigger();
+  setupSanjeevAstraAI();
+
+  window.addEventListener('swasthya:languageChanged', () => {
+    buildTodayChecklist();
+    calculateAdherenceTrend();
+  });
 });
+
+function setupSosTrigger() {
+  const dashSosBtn = document.getElementById('btn-dashboard-sos');
+  if (dashSosBtn) {
+    dashSosBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      triggerMedicalSos();
+    });
+  }
+}
+
+// 🩺 Sanjeev Astra AI Healthcare Navigation Assistant Handler
+function setupSanjeevAstraAI() {
+  const input = document.getElementById('sanjeev-problem-input');
+  const voiceBtn = document.getElementById('btn-sanjeev-voice');
+  const guideBtn = document.getElementById('btn-sanjeev-guide');
+  const resultBox = document.getElementById('sanjeev-guidance-result');
+
+  if (!guideBtn || !resultBox) return;
+
+  const voiceAssistant = new VoiceAssistant({
+    onStatusChange: (status) => {
+      if (status === 'listening') {
+        voiceBtn.style.background = '#EF4444';
+        voiceBtn.innerHTML = '<span>🔴</span> <span>Listening...</span>';
+      } else {
+        voiceBtn.style.background = '';
+        voiceBtn.innerHTML = '<span>🎤</span> <span>Tell us your problem</span>';
+      }
+    },
+    onResult: (res) => {
+      if (input) input.value = res.transcript;
+      renderSanjeevGuidance(res.transcript, resultBox);
+    },
+    onError: () => {
+      voiceBtn.style.background = '';
+      voiceBtn.innerHTML = '<span>🎤</span> <span>Tell us your problem</span>';
+      showToast('Voice Assistant', 'Voice not supported or permitted. Please type your problem.', 'warning');
+    }
+  });
+
+  voiceBtn?.addEventListener('click', () => {
+    voiceAssistant.startListening();
+  });
+
+  guideBtn.addEventListener('click', () => {
+    const text = input?.value?.trim();
+    if (!text) {
+      showToast('Input Required', 'Please describe your health problem or symptoms', 'warning');
+      return;
+    }
+    renderSanjeevGuidance(text, resultBox);
+  });
+
+  input?.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') guideBtn.click();
+  });
+}
+
+function renderSanjeevGuidance(text, container) {
+  const lower = text.toLowerCase();
+  
+  // Rule categorization for emergency vs clinical vs self care
+  const isUrgent = ['chest', 'heart', 'breath', 'stroke', 'bleed', 'unconscious', 'faint', 'chok', 'paraly', 'trauma', 'burn', 'छाती', 'सांस', 'खून', 'दौरा', 'छातीत', 'श्वास', 'बेशुद्ध'].some(kw => lower.includes(kw));
+  const isModerate = ['fever', 'vomit', 'diarrhea', 'stomach', 'fracture', 'rash', 'pain', 'cough', 'headache', 'बुखार', 'उल्टी', 'दस्त', 'पेट', 'खांसी', 'ताप', 'उलटी', 'जुलाब', 'पोटदुखी', 'खोकला'].some(kw => lower.includes(kw));
+
+  let urgency, careType, facility, steps, isEmergency = false;
+
+  if (isUrgent) {
+    isEmergency = true;
+    urgency = { label: 'High / Critical Urgency (Level 3)', badge: 'badge-danger', color: '#EF4444' };
+    careType = 'District Hospital Emergency / Trauma Centre';
+    facility = { name: 'District Civil Hospital (24x7 Emergency & ICU)', phone: '020-26127394', distance: '4.2 km' };
+    steps = 'Do not wait. Rest quietly and keep calm. Activate Medical SOS to request emergency transport or dial 108 immediately.';
+  } else if (isModerate) {
+    urgency = { label: 'Moderate Urgency / Clinical Visit (Level 2)', badge: 'badge-warning', color: '#F59E0B' };
+    careType = 'Primary Health Centre (PHC) / Community Health Centre (CHC)';
+    facility = { name: 'Community Health Centre (CHC) - Rural Block', phone: '02132-222045', distance: '7.8 km' };
+    steps = 'A physical clinical examination is advised. Visit your nearest PHC or schedule an appointment with a doctor for diagnosis.';
+  } else {
+    urgency = { label: 'Mild Symptoms / Self-Care (Level 1)', badge: 'badge-success', color: '#10B981' };
+    careType = 'Home Care & Hydration';
+    facility = { name: 'Primary Health Centre (PHC) Village OPD', phone: '02132-242100', distance: '3.1 km' };
+    steps = 'Rest adequately and maintain proper hydration. If symptoms worsen or persist for more than 48 hours, seek clinical consultation.';
+  }
+
+  container.style.display = 'block';
+  container.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+      <div>
+        <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-secondary);">Sanjeev Astra AI Recommendation</div>
+        <h4 style="font-size: 1.15rem; font-weight: 700; color: ${urgency.color}; margin: 2px 0 0;">
+          ${isEmergency ? '🚨 Urgent Emergency Attention Needed' : '⚕️ Healthcare Navigation Guidance'}
+        </h4>
+      </div>
+      <span class="badge ${urgency.badge}" style="font-size: 0.8rem; font-weight: 700;">${urgency.label}</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+      <div style="padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--background);">
+        <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 600;">Recommended Care Type</div>
+        <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-primary); margin-top: 2px;">${careType}</div>
+      </div>
+      <div style="padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--background);">
+        <div style="font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 600;">Nearby Relevant Facility</div>
+        <div style="font-weight: 700; font-size: 0.95rem; color: var(--primary); margin-top: 2px;">${facility.name}</div>
+        <div style="font-size: 0.75rem; color: var(--text-secondary);">Distance: ${facility.distance} • 📞 ${facility.phone}</div>
+      </div>
+    </div>
+
+    <div style="font-size: 0.85rem; line-height: 1.5; color: var(--text-primary); margin-bottom: 14px;">
+      <strong>Suggested Next Steps:</strong> ${steps}
+    </div>
+
+    <div style="display: flex; gap: 10px; flex-wrap: wrap; border-top: 1px solid var(--border); padding-top: 12px;">
+      ${isEmergency ? `
+        <button class="btn btn-danger" id="sanjeev-trigger-sos-btn" style="flex: 1; padding: 10px 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <span>🚑</span> <span>Request Medical SOS Now</span>
+        </button>
+        <a href="tel:108" class="btn btn-secondary" style="padding: 10px 16px; font-weight: 700; text-decoration: none;">
+          📞 Dial 108
+        </a>
+      ` : `
+        <a href="/appointments.html" class="btn btn-primary" style="flex: 1; padding: 10px 16px; font-weight: 600; text-decoration: none; text-align: center;">
+          📅 Book Consultation / Appointment
+        </a>
+        <button class="btn btn-secondary" id="sanjeev-trigger-sos-btn" style="padding: 10px 16px; font-weight: 600;">
+          🚑 View Emergency SOS
+        </button>
+      `}
+    </div>
+
+    <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 10px; line-height: 1.3;">
+      <em>Disclaimer: Sanjeev Astra AI provides preliminary healthcare navigation and level-of-care guidance. It does not provide medical diagnoses. Always consult a qualified physician.</em>
+    </div>
+  `;
+
+  container.querySelector('#sanjeev-trigger-sos-btn')?.addEventListener('click', () => {
+    triggerMedicalSos();
+  });
+}
 
 // Load summary metrics, checklist, and charts
 async function loadDashboardData() {

@@ -1,4 +1,4 @@
-/* SwasthyaSetu OCR Scanner Controller */
+/* Sanjeev Astra OCR Scanner Controller */
 import { apiFetch, showToast } from './api.js';
 
 let activeTab = 'medicine'; // 'medicine' or 'prescription'

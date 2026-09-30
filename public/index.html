@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SwasthyaSetu - AI-Powered Healthcare Management Platform</title>
+  <title>Sanjeev Astra - AI-Powered Healthcare Navigation Platform</title>
   
   <!-- Fonts -->
   <link rel="stylesheet" href="/css/variables.css">
@@ -377,12 +377,13 @@
   <nav class="landing-nav">
     <div class="logo-container">
       <svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
-      SwasthyaSetu
+      <span data-i18n="app.name">Sanjeev Astra</span>
     </div>
     <ul class="nav-links">
       <li><a href="#features">Features</a></li>
       <li><a href="#how-it-works">How It Works</a></li>
       <li><a href="#faq">FAQ</a></li>
+      <li><div id="landing-lang-selector"></div></li>
       <li><a href="/login.html" class="btn btn-secondary">Sign In</a></li>
       <li><a href="/register.html" class="btn btn-primary">Get Started</a></li>
     </ul>
@@ -392,11 +393,11 @@
   <header class="hero-section">
     <div>
       <div class="hero-badge">
-        <span style="font-size: 1rem;">✨</span> Introducing SwasthyaSetu AI
+        <span style="font-size: 1rem;">✨</span> Introducing Sanjeev Astra AI
       </div>
-      <h1 class="hero-title">Your complete <span>AI-Powered</span> Healthcare Hub</h1>
+      <h1 class="hero-title">AI-Powered <span>Healthcare Navigation</span> for Everyone</h1>
       <p class="hero-desc">
-        Streamline your medication schedules, digitize prescriptions instantly using AI scanner, track clinic appointments, archive laboratory records, and maintain critical profiles—all in one secure vault.
+        Sanjeev Astra is an AI-powered healthcare navigation platform that helps patients describe their health problems, understand the appropriate level of care, discover nearby healthcare facilities, and access emergency assistance when required.
       </p>
       <div class="hero-buttons">
         <a href="/register.html" class="btn btn-primary" style="padding: 14px 28px; font-size: 1rem;">Get Started Free</a>
@@ -514,7 +515,7 @@
     <div class="faq-wrapper">
       <div class="faq-item">
         <div class="faq-question">
-          Is my health data secure on SwasthyaSetu?
+          Is my health data secure on Sanjeev Astra?
           <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" style="transition: var(--transition);"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
         <div class="faq-answer">
@@ -538,7 +539,7 @@
           <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" style="transition: var(--transition);"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
         <div class="faq-answer">
-          No. SwasthyaSetu and its AI assistant provide general wellness pointers, composition lookups, and tracking calendars. Responses are strictly educational and not a replacement for advice from certified clinical professionals.
+          No. Sanjeev Astra and its AI assistant provide general wellness pointers, preliminary care level suggestions, and emergency coordination. Responses are strictly educational guidance and not a replacement for advice from certified clinical professionals.
         </div>
       </div>
     </div>
@@ -550,9 +551,9 @@
       <div class="footer-col">
         <div class="logo-container" style="margin-bottom: 20px;">
           <svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
-          SwasthyaSetu
+          Sanjeev Astra
         </div>
-        <p class="footer-desc">Empowering individuals and families to take control of their clinical files, adherence schedules, and records via intelligent automation.</p>
+        <p class="footer-desc">AI-powered healthcare navigation platform connecting patients with the right care, nearby facilities, and emergency medical transport.</p>
       </div>
       <div class="footer-col">
         <h4>Product</h4>
@@ -573,18 +574,21 @@
       <div class="footer-col">
         <h4>Contact</h4>
         <ul class="footer-links">
-          <li><a href="#">support@swasthyasetu.com</a></li>
+          <li><a href="#">support@sanjeevastra.com</a></li>
           <li><a href="#">Help Line Center</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2026 SwasthyaSetu. All rights reserved.</p>
-      <p>Secure • HIPAA-Compliant Architecture • AI-Powered</p>
+      <p>&copy; 2026 Sanjeev Astra. All rights reserved.</p>
+      <p>Right Care • Right Place • Right Time • AI-Powered</p>
     </div>
   </footer>
 
-  <script>
+  <script type="module">
+    import { renderLanguageSelector } from '/js/i18n.js';
+    renderLanguageSelector(document.getElementById('landing-lang-selector'));
+
     // Simple UI interactions for FAQ Accordeons
     document.querySelectorAll('.faq-question').forEach(button => {
       button.addEventListener('click', () => {

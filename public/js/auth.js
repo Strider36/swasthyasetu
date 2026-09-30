@@ -1,4 +1,4 @@
-/* SwasthyaSetu Authentication Handlers */
+/* Sanjeev Astra Authentication Handlers */
 import { apiFetch, setToken, isAuthenticated, showToast } from './api.js';
 
 document.addEventListener('DOMContentLoaded', () => {

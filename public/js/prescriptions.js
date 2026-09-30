@@ -1,4 +1,4 @@
-/* SwasthyaSetu Prescriptions Archive Controller */
+/* Sanjeev Astra Prescriptions Archive Controller */
 import { apiFetch, showToast } from './api.js';
 
 let prescriptionsList = [];

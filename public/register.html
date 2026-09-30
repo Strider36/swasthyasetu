@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Vault Account - SwasthyaSetu</title>
+  <title>Create Vault Account - Sanjeev Astra</title>
   
   <link rel="stylesheet" href="/css/variables.css">
   <link rel="stylesheet" href="/css/components.css">
@@ -86,51 +86,57 @@
 </head>
 <body>
 
+  <div style="position: absolute; top: 20px; right: 20px;" id="auth-lang-selector"></div>
+
   <div class="auth-card">
     <a href="/" class="auth-logo">
       <svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20" stroke="currentColor" stroke-linecap="round"/></svg>
-      SwasthyaSetu
+      <span data-i18n="app.name">Sanjeev Astra</span>
     </a>
     
     <div class="auth-header">
-      <h2 class="auth-title">Create your Health Vault</h2>
-      <p class="auth-subtitle">Get started with secure medical reminder compliance profiles.</p>
+      <h2 class="auth-title" data-i18n="auth.signUpTitle">Create your Health Vault</h2>
+      <p class="auth-subtitle" data-i18n="auth.signUpSubtitle">Get started with secure medical reminder compliance profiles.</p>
     </div>
     
     <form id="register-form">
       <div class="form-group">
-        <label for="name" class="form-label">Full Name</label>
+        <label for="name" class="form-label" data-i18n="auth.name">Full Name</label>
         <input type="text" id="name" class="form-control" placeholder="John Doe" required autocomplete="name">
       </div>
 
       <div class="form-group">
-        <label for="email" class="form-label">Email Address</label>
+        <label for="email" class="form-label" data-i18n="auth.email">Email Address</label>
         <input type="email" id="email" class="form-control" placeholder="name@domain.com" required autocomplete="username">
       </div>
       
       <div class="form-group">
-        <label for="password" class="form-label">Password</label>
+        <label for="password" class="form-label" data-i18n="auth.password">Password</label>
         <input type="password" id="password" class="form-control" placeholder="At least 6 characters" required autocomplete="new-password">
       </div>
 
       <div class="form-group">
-        <label for="confirm-password" class="form-label">Confirm Password</label>
+        <label for="confirm-password" class="form-label" data-i18n="auth.confirmPassword">Confirm Password</label>
         <input type="password" id="confirm-password" class="form-control" placeholder="••••••••" required autocomplete="new-password">
       </div>
       
       <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-weight: 600; margin-top: 8px;">
-        Register Account
+        <span data-i18n="auth.signUpBtn">Register Account</span>
       </button>
     </form>
     
     <div class="auth-footer">
-      Already have an account? <a href="/login.html">Sign In</a>
+      <span data-i18n="auth.haveAccount">Already have an account?</span> <a href="/login.html" data-i18n="auth.loginLink">Sign In</a>
     </div>
   </div>
 
   <script type="module" src="/js/api.js"></script>
+  <script type="module" src="/js/i18n.js"></script>
   <script type="module" src="/js/auth.js"></script>
-  <script>
+  <script type="module">
+    import { renderLanguageSelector } from '/js/i18n.js';
+    renderLanguageSelector(document.getElementById('auth-lang-selector'));
+    
     // Theme alignment helper
     const savedTheme = localStorage.getItem('theme') || 'light';
     if (savedTheme === 'dark') {

@@ -27,6 +27,7 @@ app.use('/api/prescriptions', require('./server/routes/prescriptionRoutes'));
 app.use('/api/appointments', require('./server/routes/appointmentRoutes'));
 app.use('/api/records', require('./server/routes/recordRoutes'));
 app.use('/api/notifications', require('./server/routes/notificationRoutes'));
+app.use('/api/sos', require('./server/routes/sosRoutes'));
 
 // Wildcard router: redirect unknown paths to landing index.html
 app.get(/.*/, (req, res, next) => {

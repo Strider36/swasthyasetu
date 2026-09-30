@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Settings - SwasthyaSetu Vault</title>
+  <title>Settings - Sanjeev Astra</title>
   
   <link rel="stylesheet" href="/css/variables.css">
   <link rel="stylesheet" href="/css/main.css">
@@ -177,14 +177,10 @@
             <!-- Language Dropdown -->
             <div class="setting-row">
               <div class="setting-label-col">
-                <div class="setting-label">Language Localization</div>
-                <div class="setting-desc">Select translation package parameters for the user panels.</div>
+                <div class="setting-label" data-i18n="settings.language">Language Localization</div>
+                <div class="setting-desc" data-i18n="settings.languageDesc">Select translation package parameters for the user panels.</div>
               </div>
-              <select class="form-control" style="width: 140px; padding: 8px 12px;">
-                <option value="en">English (US)</option>
-                <option value="es">Español</option>
-                <option value="hi">हिन्दी</option>
-              </select>
+              <div id="settings-lang-selector-container"></div>
             </div>
 
             <!-- Export Records -->

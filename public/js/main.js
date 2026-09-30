@@ -1,5 +1,7 @@
-/* SwasthyaSetu Shell Layout Controller */
+/* Sanjeev Astra Shell Layout Controller */
 import { isAuthenticated, apiFetch, logout, initTheme } from './api.js';
+import { initI18n, t, renderLanguageSelector, translateDOM } from './i18n.js';
+import { triggerMedicalSos } from './sos.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // 1. Session Guard: Check authorization status
@@ -8,7 +10,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  // 2. Initialize Dark Mode setting
+  // 2. Initialize i18n & Dark Mode setting
+  await initI18n();
   initTheme();
 
   // 3. Inject Layout Shell Components
@@ -36,6 +39,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // 7. Fetch Notifications & Reminders
   loadNotifications();
+
+  // 8. Listen to language changes to re-render navigation immediately
+  window.addEventListener('swasthya:languageChanged', () => {
+    if (sidebarContainer) injectSidebar(sidebarContainer);
+    if (navbarContainer) injectNavbar(navbarContainer);
+    registerNavHandlers();
+    translateDOM();
+    if (window.lucide) window.lucide.createIcons();
+  });
 });
 
 // Sidebar Injection Helper
@@ -46,18 +58,27 @@ function injectSidebar(container) {
   container.innerHTML = `
     <div class="sidebar-logo">
       <svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
-      <span>SwasthyaSetu</span>
+      <span data-i18n="app.name">Sanjeev Astra</span>
     </div>
+    
+    <!-- Prominent Medical SOS Button in Sidebar -->
+    <div style="padding: 0 16px 14px 16px;">
+      <button id="btn-sidebar-sos" class="btn" style="width: 100%; background: linear-gradient(135deg, #EF4444, #B91C1C); color: white; font-weight: 700; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; gap: 8px; padding: 11px; border: none; cursor: pointer; box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4); font-size: 0.95rem; transition: var(--transition);">
+        <span style="font-size: 1.15rem;">🚑</span> <span data-i18n="sos.button">${t('sos.button', 'MEDICAL SOS')}</span>
+      </button>
+    </div>
+
     <ul class="sidebar-menu">
-      <li class="sidebar-item ${activePage === 'dashboard' ? 'active' : ''}"><a href="/dashboard.html"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
-      <li class="sidebar-item ${activePage === 'medicines' ? 'active' : ''}"><a href="/medicines.html"><i data-lucide="pill"></i> Medications</a></li>
-      <li class="sidebar-item ${activePage === 'scanner' ? 'active' : ''}"><a href="/scanner.html"><i data-lucide="scan-line"></i> OCR Scanner</a></li>
-      <li class="sidebar-item ${activePage === 'prescriptions' ? 'active' : ''}"><a href="/prescriptions.html"><i data-lucide="file-signature"></i> Prescriptions</a></li>
-      <li class="sidebar-item ${activePage === 'records' ? 'active' : ''}"><a href="/records.html"><i data-lucide="folder-heart"></i> Health Records</a></li>
-      <li class="sidebar-item ${activePage === 'appointments' ? 'active' : ''}"><a href="/appointments.html"><i data-lucide="calendar"></i> Appointments</a></li>
-      <li class="sidebar-item ${activePage === 'profile' ? 'active' : ''}"><a href="/profile.html"><i data-lucide="user-cog"></i> Profile Card</a></li>
-      <li class="sidebar-item ${activePage === 'settings' ? 'active' : ''}"><a href="/settings.html"><i data-lucide="settings"></i> Settings</a></li>
-      <li class="sidebar-item logout"><a href="#" id="btn-logout"><i data-lucide="log-out"></i> Logout</a></li>
+      <li class="sidebar-item ${activePage === 'dashboard' ? 'active' : ''}"><a href="/dashboard.html"><i data-lucide="layout-dashboard"></i> <span data-i18n="nav.dashboard">${t('nav.dashboard', 'Dashboard')}</span></a></li>
+      <li class="sidebar-item ${activePage === 'medicines' ? 'active' : ''}"><a href="/medicines.html"><i data-lucide="pill"></i> <span data-i18n="nav.medications">${t('nav.medications', 'Medications')}</span></a></li>
+      <li class="sidebar-item ${activePage === 'scanner' ? 'active' : ''}"><a href="/scanner.html"><i data-lucide="scan-line"></i> <span data-i18n="nav.scanner">${t('nav.scanner', 'OCR Scanner')}</span></a></li>
+      <li class="sidebar-item ${activePage === 'prescriptions' ? 'active' : ''}"><a href="/prescriptions.html"><i data-lucide="file-signature"></i> <span data-i18n="nav.prescriptions">${t('nav.prescriptions', 'Prescriptions')}</span></a></li>
+      <li class="sidebar-item ${activePage === 'records' ? 'active' : ''}"><a href="/records.html"><i data-lucide="folder-heart"></i> <span data-i18n="nav.records">${t('nav.records', 'Health Records')}</span></a></li>
+      <li class="sidebar-item ${activePage === 'appointments' ? 'active' : ''}"><a href="/appointments.html"><i data-lucide="calendar"></i> <span data-i18n="nav.appointments">${t('nav.appointments', 'Appointments')}</span></a></li>
+      <li class="sidebar-item ${activePage === 'sos-admin' ? 'active' : ''}"><a href="/sos-admin.html"><i data-lucide="shield-alert"></i> <span data-i18n="nav.adminBoard">${t('nav.adminBoard', 'Dispatch Board')}</span></a></li>
+      <li class="sidebar-item ${activePage === 'profile' ? 'active' : ''}"><a href="/profile.html"><i data-lucide="user-cog"></i> <span data-i18n="nav.profile">${t('nav.profile', 'Profile Card')}</span></a></li>
+      <li class="sidebar-item ${activePage === 'settings' ? 'active' : ''}"><a href="/settings.html"><i data-lucide="settings"></i> <span data-i18n="nav.settings">${t('nav.settings', 'Settings')}</span></a></li>
+      <li class="sidebar-item logout"><a href="#" id="btn-logout"><i data-lucide="log-out"></i> <span data-i18n="nav.logout">${t('nav.logout', 'Logout')}</span></a></li>
     </ul>
   `;
 }
@@ -78,7 +99,15 @@ function injectNavbar(container) {
         <p class="page-subtitle" style="margin-top: 0; font-size: 0.8rem;">${pageSubtitle}</p>
       </div>
     </div>
-    <div class="nav-right">
+    <div class="nav-right" style="display: flex; align-items: center; gap: 14px;">
+      <!-- Language Selector -->
+      <div id="navbar-lang-selector"></div>
+
+      <!-- Quick Nav SOS Button -->
+      <button id="btn-nav-sos" class="btn" style="background: #EF4444; color: white; font-weight: 700; font-size: 0.85rem; padding: 6px 14px; border-radius: var(--radius-full); display: flex; align-items: center; gap: 6px; border: none; cursor: pointer; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);">
+        <span>🚑</span> <span data-i18n="sos.button">${t('sos.button', 'SOS')}</span>
+      </button>
+
       <div style="position: relative;">
         <button class="btn btn-secondary btn-icon" id="btn-notifications" style="border-radius: var(--radius-full); position: relative; padding: 8px;">
           <i data-lucide="bell"></i>
@@ -102,6 +131,12 @@ function injectNavbar(container) {
       </div>
     </div>
   `;
+
+  // Render language selector widget into navbar
+  const langContainer = container.querySelector('#navbar-lang-selector');
+  if (langContainer) {
+    renderLanguageSelector(langContainer);
+  }
 }
 
 // Bind header data
@@ -126,6 +161,23 @@ function loadUserHeader() {
 
 // Bind events to injected nodes
 function registerNavHandlers() {
+  // SOS buttons
+  const sidebarSosBtn = document.getElementById('btn-sidebar-sos');
+  if (sidebarSosBtn) {
+    sidebarSosBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      triggerMedicalSos();
+    });
+  }
+
+  const navSosBtn = document.getElementById('btn-nav-sos');
+  if (navSosBtn) {
+    navSosBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      triggerMedicalSos();
+    });
+  }
+
   // Logout button
   const logoutBtn = document.getElementById('btn-logout');
   if (logoutBtn) {

@@ -1,4 +1,4 @@
-/* SwasthyaSetu API Service Wrapper */
+/* Sanjeev Astra API Service Wrapper */
 
 const API_BASE = '/api';
 
@@ -103,3 +103,25 @@ export const formatBloodGroup = (bg) => {
   const validGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
   return validGroups.includes(bg?.toUpperCase()) ? bg.toUpperCase() : null;
 };
+
+// Trigger browser reminders dynamically
+export function triggerReminderAudio() {
+  try {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(880, audioContext.currentTime); // A5 note
+    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+    
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 0.3); // play for 300ms
+  } catch (err) {
+    console.log('AudioContext not allowed or not supported yet:', err);
+  }
+}
+

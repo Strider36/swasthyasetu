@@ -1,9 +1,9 @@
-/* SwasthyaSetu AI Health Assistant Chatbot Drawer */
+/* Sanjeev Astra AI Health Assistant Chatbot Drawer */
 
 const KNOWLEDGE_BASE = {
   greetings: [
-    "Hello! I am your AI Health Assistant. I can help search medicine composition, usages, storage tips, or general healthy lifestyle advices. How can I help you today?",
-    "Hi there! Ask me about medicines, medical definitions, or lifestyle tips. Remember, my advices are strictly informational.",
+    "Hello! I am your Sanjeev Astra AI Healthcare Navigation Assistant. I can help assess symptoms, recommend appropriate care levels, locate nearby facilities, or provide medicine information. How can I help you today?",
+    "Hi there! Ask Sanjeev Astra AI about symptoms, care levels, or medications. Remember, my guidance is strictly informational.",
   ],
   medications: [
     {
@@ -207,7 +207,7 @@ function showTypingIndicator() {
   indicator.style.padding = '10px 14px';
   indicator.style.borderRadius = '0 var(--radius-md) var(--radius-md) var(--radius-md)';
   indicator.style.fontSize = '0.8rem';
-  indicator.textContent = 'SwasthyaSetu AI is thinking...';
+  indicator.textContent = 'Sanjeev Astra AI is thinking...';
 
   container.appendChild(indicator);
   container.scrollTop = container.scrollHeight;

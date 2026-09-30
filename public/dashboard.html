@@ -3,11 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard - SwasthyaSetu Vault</title>
+  <title>Dashboard - Sanjeev Astra</title>
   
   <link rel="stylesheet" href="/css/variables.css">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/components.css">
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   
   <style>
     /* Dashboard Page Grid Layout */
@@ -226,7 +228,7 @@
             </div>
             <div class="stat-info">
               <div class="stat-num" id="stat-medicines">-</div>
-              <div class="stat-label">Active Medicines</div>
+              <div class="stat-label" data-i18n="dashboard.activeMedicines">Active Medicines</div>
             </div>
           </div>
           
@@ -236,14 +238,14 @@
             </div>
             <div class="stat-info">
               <div class="stat-num" id="stat-appointments">-</div>
-              <div class="stat-label">Upcoming Appointments</div>
+              <div class="stat-label" data-i18n="dashboard.upcomingAppointments">Upcoming Appointments</div>
             </div>
           </div>
 
           <div class="glass-card stat-card" style="justify-content: space-between;">
             <div class="stat-info">
               <div class="stat-num" id="stat-compliance">-</div>
-              <div class="stat-label">Weekly Compliance</div>
+              <div class="stat-label" data-i18n="dashboard.weeklyCompliance">Weekly Compliance</div>
             </div>
             
             <div class="progress-ring-container">
@@ -261,6 +263,48 @@
           <!-- Left Main Area: Charts & checklist -->
           <div style="display: flex; flex-direction: column; gap: 28px;">
             
+            <!-- 🩺 Sanjeev Astra AI Healthcare Navigation Assistant -->
+            <div class="glass-card" style="background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.06), rgba(6, 182, 212, 0.06)); border: 1.5px solid rgba(var(--primary-rgb), 0.2); border-radius: var(--radius-lg); padding: 22px;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.35rem; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.25);">
+                    🩺
+                  </div>
+                  <div>
+                    <h3 style="font-size: 1.2rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 8px;">
+                      <span>Sanjeev Astra AI</span>
+                      <span class="badge badge-info" style="font-size: 0.7rem; font-weight: 600;">Navigation Engine</span>
+                    </h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 2px 0 0;">
+                      Right Care • Right Place • Right Time
+                    </p>
+                  </div>
+                </div>
+                <span class="badge badge-success" style="font-size: 0.75rem;">● Online Guidance</span>
+              </div>
+
+              <p style="font-size: 0.95rem; font-weight: 600; margin-bottom: 12px; color: var(--text-primary);">
+                How can Sanjeev Astra help you today?
+              </p>
+
+              <!-- Interactive Input & Voice Triggers -->
+              <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 240px;">
+                  <input type="text" id="sanjeev-problem-input" class="form-control" placeholder="Tell us your problem (e.g. chest pain, high fever, stomach pain, dizziness)..." style="border-radius: var(--radius-full); padding: 12px 18px; font-size: 0.85rem;">
+                </div>
+                <button class="btn btn-secondary" id="btn-sanjeev-voice" style="border-radius: var(--radius-full); padding: 8px 16px; font-weight: 600; display: flex; align-items: center; gap: 6px; font-size: 0.85rem;">
+                  <span>🎤</span> <span>Tell us your problem</span>
+                </button>
+                <button class="btn btn-primary" id="btn-sanjeev-guide" style="border-radius: var(--radius-full); padding: 8px 18px; font-weight: 700; display: flex; align-items: center; gap: 6px; font-size: 0.85rem;">
+                  <span>🩺</span> <span>Get Healthcare Guidance</span>
+                </button>
+              </div>
+
+              <!-- AI Guidance Result Container -->
+              <div id="sanjeev-guidance-result" style="display: none; margin-top: 16px; padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--surface);">
+              </div>
+            </div>
+
             <!-- Adherence Graph -->
             <div class="glass-card">
               <h3 style="font-size: 1.15rem; margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
@@ -289,13 +333,29 @@
           <!-- Right Column: Emergency panel & Quick actions -->
           <div style="display: flex; flex-direction: column; gap: 28px;">
             
-            <!-- Emergency Alert Widget -->
+            <!-- Medical SOS Emergency Dispatch Trigger Card -->
+            <div class="glass-card" style="background: linear-gradient(135deg, #EF4444, #B91C1C); color: white; border: none; box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.4);">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                <h3 style="color: white; font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 8px; margin: 0;">
+                  <span>🚑</span> <span data-i18n="sos.button">MEDICAL SOS</span>
+                </h3>
+                <span class="badge" style="background: rgba(255, 255, 255, 0.25); color: white; font-size: 0.75rem; font-weight: 700;">24x7 EMERGENCY</span>
+              </div>
+              <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.85rem; line-height: 1.4; margin-bottom: 16px;" data-i18n="sos.question">
+                Are you experiencing a medical emergency? Request an ambulance or locate nearest hospital.
+              </p>
+              <button class="btn" id="btn-dashboard-sos" style="background-color: white; color: #EF4444; font-weight: 700; border-radius: var(--radius-md); border: none; width: 100%; padding: 13px; font-size: 1.05rem; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); cursor: pointer;">
+                <span style="font-size: 1.2rem;">🆘</span> <span data-i18n="sos.requestAmbulance">Request Ambulance / Help</span>
+              </button>
+            </div>
+
+            <!-- Emergency Alert Vital Card Widget -->
             <div class="glass-card emergency-widget">
               <h3 style="font-size: 1.2rem; display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                <i data-lucide="heart-handshake"></i> Emergency Medical Card
+                <i data-lucide="heart-handshake"></i> <span data-i18n="dashboard.emergencyCard">Emergency Medical Card</span>
               </h3>
-              <p>Instantly fetch and display emergency contacts, allergies, conditions, and blood details for medical staff.</p>
-              <button class="btn btn-emergency" id="btn-trigger-emergency">
+              <p data-i18n="dashboard.emergencyCardDesc">Instantly fetch and display emergency contacts, allergies, conditions, and blood details for medical staff.</p>
+              <button class="btn btn-emergency" id="btn-trigger-emergency" data-i18n="dashboard.showEmergencyCard">
                 Show Emergency Card
               </button>
             </div>
@@ -355,7 +415,7 @@
           <i data-lucide="bot"></i>
         </div>
         <div>
-          <div style="font-weight: 600; font-size: 0.95rem;">SwasthyaSetu AI</div>
+          <div style="font-weight: 600; font-size: 0.95rem;">Sanjeev Astra AI</div>
           <div style="font-size: 0.7rem; color: var(--success); display: flex; align-items: center; gap: 4px;"><span>●</span> Online Guidance</div>
         </div>
       </div>
@@ -371,7 +431,7 @@
     <!-- Messages list -->
     <div id="chat-messages" style="flex-grow: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px;">
       <div style="align-self: flex-start; max-width: 80%; background-color: var(--background); padding: 12px 16px; border-radius: 0 var(--radius-md) var(--radius-md) var(--radius-md); font-size: 0.85rem; line-height: 1.5;">
-        Hello! I am your AI Health Assistant. I can help search medicine composition, usages, storage tips, or general healthy lifestyle advices. How can I help you today?
+        Hello! I am your Sanjeev Astra AI Healthcare Navigation Assistant. I can help assess symptoms, recommend appropriate care levels, locate nearby facilities, or provide medicine information. How can I help you today?
       </div>
     </div>
     
@@ -447,8 +507,12 @@
   <!-- CDN scripts -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Leaflet Map JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   
   <script type="module" src="/js/api.js"></script>
+  <script type="module" src="/js/i18n.js"></script>
+  <script type="module" src="/js/sos.js"></script>
   <script type="module" src="/js/main.js"></script>
   <script type="module" src="/js/chat.js"></script>
   <script type="module" src="/js/dashboard.js"></script>

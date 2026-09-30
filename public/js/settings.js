@@ -1,10 +1,19 @@
-/* SwasthyaSetu Settings Controller */
+/* Sanjeev Astra Settings Controller */
 import { apiFetch, showToast } from './api.js';
+import { renderLanguageSelector } from './i18n.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   setupThemeToggler();
   setupDataExporter();
+  setupLanguageSetting();
 });
+
+function setupLanguageSetting() {
+  const container = document.getElementById('settings-lang-selector-container');
+  if (container) {
+    renderLanguageSelector(container);
+  }
+}
 
 // Sync Theme preferences
 function setupThemeToggler() {
@@ -61,7 +70,7 @@ function setupDataExporter() {
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObject, null, 2));
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `swasthyasetu-profile-export-${new Date().toISOString().split('T')[0]}.json`);
+      downloadAnchor.setAttribute("download", `sanjeev-astra-profile-export-${new Date().toISOString().split('T')[0]}.json`);
       
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();

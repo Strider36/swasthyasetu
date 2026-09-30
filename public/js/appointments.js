@@ -1,4 +1,4 @@
-/* SwasthyaSetu Appointments Controller */
+/* Sanjeev Astra Appointments Controller */
 import { apiFetch, showToast } from './api.js';
 
 let userAppointments = [];

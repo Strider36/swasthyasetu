@@ -23,6 +23,15 @@ const UserSchema = new mongoose.Schema({
     minlength: 6,
     select: false
   },
+  role: {
+    type: String,
+    enum: ['patient', 'health_worker', 'admin'],
+    default: 'patient'
+  },
+  phone: {
+    type: String,
+    default: ''
+  },
   // Profile metrics
   age: {
     type: Number,

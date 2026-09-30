@@ -1,4 +1,4 @@
-/* SwasthyaSetu Medicines Controller */
+/* Sanjeev Astra Medicines Controller */
 import { apiFetch, showToast } from './api.js';
 
 let userMedicines = [];

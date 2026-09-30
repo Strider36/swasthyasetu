@@ -1,4 +1,4 @@
-/* SwasthyaSetu Profile Manager */
+/* Sanjeev Astra Profile Manager */
 import { apiFetch, showToast } from './api.js';
 
 let activeAllergies = [];
